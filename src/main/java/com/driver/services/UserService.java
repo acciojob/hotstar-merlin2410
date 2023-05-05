@@ -7,6 +7,7 @@ import com.driver.model.User;
 import com.driver.model.WebSeries;
 import com.driver.repository.UserRepository;
 import com.driver.repository.WebSeriesRepository;
+import jdk.internal.loader.AbstractClassLoaderValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,9 +38,17 @@ public class UserService {
         List<WebSeries> webSeriesList = webSeriesRepository.findAll();
         int count = 0;
         for(WebSeries webSeries: webSeriesList){
-            if(webSeries.getSubscriptionType()==user.getSubscription().getSubscriptionType()){
-                if(user.getAge()>=webSeries.getAgeLimit()){
+            if(user.getAge()>=webSeries.getAgeLimit()){
+                if(user.getSubscription().getSubscriptionType()== SubscriptionType.ELITE){
                     count++;
+                } else if (user.getSubscription().getSubscriptionType()==SubscriptionType.PRO) {
+                    if(webSeries.getSubscriptionType()==SubscriptionType.BASIC || webSeries.getSubscriptionType()==SubscriptionType.PRO){
+                        count++;
+                    }
+                } else if (user.getSubscription().getSubscriptionType()==SubscriptionType.BASIC) {
+                    if(webSeries.getSubscriptionType()==SubscriptionType.BASIC){
+                        count++;
+                    }
                 }
             }
         }

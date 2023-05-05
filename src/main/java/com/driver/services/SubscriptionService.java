@@ -42,7 +42,7 @@ public class SubscriptionService {
         subscription.setUser(user);
         user.setSubscription(subscription);
         userRepository.save(user);
-        return subscription.getId();
+        return totalAmountPaid;
     }
 
     public Integer upgradeSubscription(Integer userId)throws Exception{
